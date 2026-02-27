@@ -1,10 +1,13 @@
-import { StyleSheet, View } from 'react-native';
-import { NewsFeed } from '@/components/NewsFeed';
+import { NewsFeed } from "@/components/NewsFeed";
+import { PriceProvider } from "@/contexts/PriceContext";
+import { StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <NewsFeed />
+      <PriceProvider>
+        <NewsFeed />
+      </PriceProvider>
     </View>
   );
 }
@@ -12,6 +15,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f7',
+    backgroundColor: "#f5f5f7",
   },
 });

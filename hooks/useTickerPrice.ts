@@ -1,17 +1,19 @@
 import { useCallback, useSyncExternalStore } from 'react';
-import { priceStore } from '@/stores/priceStore';
+import { usePriceContext } from '@/contexts/PriceContext';
 import type { PriceSnapshot } from '@/stores/types';
 
 export function useTickerPrice(ticker: string): PriceSnapshot {
+  const { subscribe, getSnapshot } = usePriceContext();
+
   const subscribeToTicker = useCallback(
-    (cb: () => void) => priceStore.subscribe(ticker, cb),
-    [ticker],
+    (cb: () => void) => subscribe(ticker, cb),
+    [subscribe, ticker],
   );
 
-  const getSnapshot = useCallback(
-    () => priceStore.getSnapshot(ticker),
-    [ticker],
+  const snap = useCallback(
+    () => getSnapshot(ticker),
+    [getSnapshot, ticker],
   );
 
-  return useSyncExternalStore(subscribeToTicker, getSnapshot, getSnapshot);
+  return useSyncExternalStore(subscribeToTicker, snap, snap);
 }

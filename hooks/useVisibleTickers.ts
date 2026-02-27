@@ -1,16 +1,17 @@
 import { useCallback, useRef } from 'react';
 import type { ViewToken } from 'react-native';
 import type { NewsItem } from '@/stores/types';
-import { updateSubscriptions } from '@/services/websocket';
+import { usePriceContext } from '@/contexts/PriceContext';
 
 const DEBOUNCE_MS = 150;
 
 /**
  * Returns a stable onViewableItemsChanged handler that
  * debounces visible-ticker extraction and pushes it
- * to the WebSocket subscription manager.
+ * to the WebSocket subscription manager via PriceContext.
  */
 export function useVisibleTickers() {
+  const { updateSubscriptions } = usePriceContext();
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const onViewableItemsChanged = useCallback(
@@ -28,7 +29,7 @@ export function useVisibleTickers() {
         updateSubscriptions(tickers);
       }, DEBOUNCE_MS);
     },
-    [],
+    [updateSubscriptions],
   );
 
   return { onViewableItemsChanged };

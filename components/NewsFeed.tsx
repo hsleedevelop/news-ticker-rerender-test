@@ -9,7 +9,6 @@ import {
 import type { ViewToken } from 'react-native';
 import { NewsCard } from './NewsCard';
 import { useVisibleTickers } from '@/hooks/useVisibleTickers';
-import { disconnect } from '@/services/websocket';
 import { fetchNews } from '@/services/api';
 import type { NewsItem } from '@/stores/types';
 
@@ -36,7 +35,6 @@ export function NewsFeed() {
     });
     return () => {
       cancelled = true;
-      disconnect();
     };
   }, []);
 
